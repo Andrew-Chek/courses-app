@@ -1,0 +1,37 @@
+.course-card {
+    display: grid;
+    grid-template-areas: "info additional";
+    grid-template-columns: 1fr .5fr;
+    gap: 20px;
+    border: 2px solid #abd2c4;
+    padding: 20px;
+}
+
+.course-card > button {
+    display: flex;
+    justify-content: center;
+}
+
+.course-title {
+    font-size: 32px;
+}
+
+.course-description {
+    text-align: justify;
+}
+
+.course-info {
+    grid-area: info;
+}
+
+.course-additional {
+    grid-area: additional;
+}
+
+.course-pgh {
+    font-weight: 700;
+}
+
+.course-span {
+    font-weight: 400;
+}

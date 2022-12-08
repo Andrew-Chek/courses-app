@@ -1,0 +1,17 @@
+.custom-btn {
+    padding: 6px 15px;
+    background-color: #fff;
+    border: 2px solid #d3bde9;
+    transition: .7s all ease;
+    cursor: pointer;
+}
+
+.course-btn {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.custom-btn:hover {
+    color: #a98dc1;
+}

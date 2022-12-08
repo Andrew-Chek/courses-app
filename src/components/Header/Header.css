@@ -1,0 +1,21 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 3px solid #ead3d5;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+}
+
+.header-aside {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-title {
+    margin: 0;
+    padding: 0 10px;
+    font-size: 18px;
+    font-weight: 500;
+}

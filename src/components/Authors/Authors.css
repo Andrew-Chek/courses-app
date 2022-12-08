@@ -1,0 +1,9 @@
+.authors-pgh {
+    text-align: center;
+}
+
+.author {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}

@@ -1,0 +1,45 @@
+.desc {
+    width: 100%;
+    padding: 0;
+}
+
+.create-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.button-wrapper {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.additional {
+    border: 2px solid #000;
+    padding: 30px;
+    margin-top: 20px;
+    display: grid;
+    grid-template-areas: "fields authors";
+    gap: 60px;
+}
+
+.fields {
+    grid-area: fields;
+}
+
+.author-name {
+    text-align: center;
+}
+
+.author-input {
+    width: 100%;
+}
+
+.authors {
+    grid-area: authors;
+}
+
+.authors-title {
+    text-align: center;
+}

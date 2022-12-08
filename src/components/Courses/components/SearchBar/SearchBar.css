@@ -1,0 +1,9 @@
+.searchbar {
+    display: flex;
+    align-items: center;
+}
+
+.search-btn {
+    margin: 15px 25px 0 25px;
+    padding: 10px;
+}

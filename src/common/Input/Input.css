@@ -1,0 +1,18 @@
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+}
+
+.input-label {
+    margin-bottom: 5px;
+}
+
+.input-elem {
+    padding: 10px 0;
+    padding-left: 10px;
+    border: 2px solid #f6d9bd;
+    width: 400px;
+    transition: .3s all ease;
+    width: 100%;
+}

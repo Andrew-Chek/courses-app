@@ -1,0 +1,22 @@
+.main {
+    border: 3px solid #bde1f7;
+    padding: 30px;
+    display: grid;
+    gap: 30px;
+}
+
+.tools-menu {
+    display: grid;
+    grid-template-areas: "searchbar new-btn";
+    grid-template-columns: 1fr .13fr;
+    gap: 20px;
+}
+
+.searchbar {
+    grid-area: searchbar;
+}
+
+.new-btn {
+    grid-area: new-btn;
+    margin-top: 10px;
+}
