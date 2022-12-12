@@ -1,3 +1,11 @@
+.create-wrapper {
+    display: none;
+}
+
+.opened-create-wrapper {
+    display: block;
+}
+
 .desc {
     width: 100%;
     padding: 0;
@@ -42,4 +50,11 @@
 
 .authors-title {
     text-align: center;
+}
+
+.duration {
+    font-size: 24px;
+}
+.duration-value {
+    font-weight: 600;
 }

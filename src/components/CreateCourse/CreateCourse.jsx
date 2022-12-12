@@ -3,13 +3,17 @@ import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import Authors from '../Authors/Authors';
 import '../../common/Input/Input';
-import { mockedAuthorsList } from '../../mockData/mockData';
+import { mockedAuthorsList, mockedCoursesList } from '../../mockData/mockData';
 import { useState, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-uuidv4();
+import { getDuration } from '../../helpers/durationPipe';
 
-function CreateCourse() {
+function CreateCourse({ classValues, setClassesHandler }) {
 	const [authors, setAuthors] = useState(mockedAuthorsList);
+	const [titleValue, setTitle] = useState('');
+	const [descriptionValue, setDescription] = useState('');
+	const [durationValue, setDuration] = useState(null);
+
 	const addAuthorHandler = useCallback(
 		(authorId) => {
 			setAuthors(
@@ -21,19 +25,54 @@ function CreateCourse() {
 		[authors]
 	);
 
+	const createCourseHandler = () => {
+		const course = {
+			id: uuidv4(),
+			title: titleValue,
+			description: descriptionValue,
+			creationDate: new Date(),
+			duration: durationValue,
+			authors: getChosenAuthors(),
+		};
+		mockedCoursesList.push(course);
+		setAuthors([...authors, authors.map((author) => (author.added = false))]);
+		setTitle('');
+		setDescription('');
+		setDuration('');
+		setName('');
+		setClassesHandler('create-wrapper');
+	};
+
+	const getChosenAuthors = () => {
+		return authors.filter((author) => {
+			return author.added;
+		});
+	};
+
 	const [authorName, setName] = useState('');
 	const addNewAuthor = () => {
 		const author = { id: uuidv4(), name: authorName, added: false };
 		mockedAuthorsList.push(author);
-		setAuthors([...authors, authors.push(author)]);
+		setAuthors([...mockedAuthorsList]);
 	};
 
 	return (
-		<div className='create-wrapper'>
+		<div className={classValues}>
 			<section className='create-header'>
-				<Input placeholder='Enter title' label='Title'></Input>
+				<Input
+					placeholder='Enter title'
+					handleChange={(event) => {
+						setTitle(event.target.value);
+					}}
+					value={titleValue}
+					label='Title'
+				></Input>
 				<div className='btn-div'>
-					<Button classValue='custom-btn' buttonText='Create course'></Button>
+					<Button
+						classValue='custom-btn'
+						click={createCourseHandler}
+						buttonText='Create course'
+					></Button>
 				</div>
 			</section>
 			<section className='input-wrapper'>
@@ -41,6 +80,10 @@ function CreateCourse() {
 					Description
 				</label>
 				<textarea
+					onChange={(event) => {
+						setDescription(event.target.value);
+					}}
+					value={descriptionValue}
 					className='input-elem desc'
 					id='description'
 					cols='30'
@@ -54,6 +97,7 @@ function CreateCourse() {
 						handleChange={(event) => {
 							setName(event.target.value);
 						}}
+						value={authorName}
 						placeholder='Enter author name...'
 						className='author-input'
 						label='Author name'
@@ -61,12 +105,27 @@ function CreateCourse() {
 					<div className='button-wrapper'>
 						<Button
 							buttonText='Create author'
-							click={() => {
-								addNewAuthor();
-							}}
+							click={addNewAuthor}
 							classValue='custom-btn'
 						></Button>
 					</div>
+					<h3 className='author-name'>Duration</h3>
+					<Input
+						handleChange={(event) => {
+							setDuration(event.target.value);
+						}}
+						placeholder='Enter duration in minutes...'
+						value={durationValue}
+						className='author-input'
+						label='Duration'
+					></Input>
+					<p className='duration'>
+						Duration:
+						<span className='duration-value'>
+							{' ' + getDuration(durationValue) + ' '}
+						</span>
+						hours
+					</p>
 				</article>
 				<article className='authors'>
 					<section>

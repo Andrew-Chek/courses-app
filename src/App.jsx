@@ -26,12 +26,21 @@ function App() {
 			  })
 			: ref.current;
 	}, [search, inputValue]);
+
+	const [createClassValues, setClasses] = useState('create-wrapper');
 	return (
 		<div>
 			<Header></Header>
 			<main className='main'>
-				<CreateCourse></CreateCourse>
-				<article className='tools-menu'>
+				<CreateCourse
+					classValues={createClassValues}
+					setClassesHandler={setClasses}
+				></CreateCourse>
+				<article
+					className={
+						createClassValues === 'create-wrapper' ? 'tools-menu' : 'hidden'
+					}
+				>
 					<SearchBar
 						className='searchbar'
 						handleChange={(event) => {
@@ -47,10 +56,21 @@ function App() {
 						<Button
 							buttonText='Add new course'
 							classValue='custom-btn'
+							click={() => {
+								setClasses('opened-create-wrapper');
+							}}
 						></Button>
 					</section>
 				</article>
-				<Courses courses={courses} authors={mockedAuthorsList}></Courses>
+				<article
+					className={
+						createClassValues === 'create-wrapper'
+							? 'courses-wrapper'
+							: 'hidden'
+					}
+				>
+					<Courses courses={courses} authors={mockedAuthorsList}></Courses>
+				</article>
 			</main>
 		</div>
 	);

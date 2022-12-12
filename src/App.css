@@ -12,6 +12,15 @@
     gap: 20px;
 }
 
+.courses-wrapper {
+    display: grid;
+    gap: 30px;
+}
+
+.hidden {
+    display: none;
+}
+
 .searchbar {
     grid-area: searchbar;
 }

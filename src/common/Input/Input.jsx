@@ -1,16 +1,17 @@
 import './Input.css';
 
-function Input(props) {
+function Input({ label, placeholder, handleChange, value = '' }) {
 	return (
 		<div className='input-wrapper'>
-			<label className='input-label' htmlFor={props.placeholder}>
-				{props.label}
+			<label className='input-label' htmlFor={placeholder}>
+				{label}
 			</label>
 			<input
-				id={props.placeholder}
+				id={placeholder}
 				className='input-elem'
-				onChange={props.handleChange}
-				placeholder={props.placeholder}
+				onChange={handleChange}
+				placeholder={placeholder}
+				value={value === null ? '' : value}
 			></input>
 		</div>
 	);
