@@ -14,6 +14,15 @@ function CreateCourse({ classValues, setClassesHandler }) {
 	const [descriptionValue, setDescription] = useState('');
 	const [durationValue, setDuration] = useState(null);
 
+	function checkAllFields() {
+		return titleValue !== '' &&
+			descriptionValue !== '' &&
+			durationValue !== '' &&
+			getChosenAuthors().length !== 0
+			? true
+			: false;
+	}
+
 	const addAuthorHandler = useCallback(
 		(authorId) => {
 			setAuthors(
@@ -26,21 +35,25 @@ function CreateCourse({ classValues, setClassesHandler }) {
 	);
 
 	const createCourseHandler = () => {
-		const course = {
-			id: uuidv4(),
-			title: titleValue,
-			description: descriptionValue,
-			creationDate: new Date(),
-			duration: durationValue,
-			authors: getChosenAuthors(),
-		};
-		mockedCoursesList.push(course);
-		setAuthors([...authors, authors.map((author) => (author.added = false))]);
-		setTitle('');
-		setDescription('');
-		setDuration('');
-		setName('');
-		setClassesHandler('create-wrapper');
+		if (checkAllFields()) {
+			const course = {
+				id: uuidv4(),
+				title: titleValue,
+				description: descriptionValue,
+				creationDate: new Date(),
+				duration: durationValue,
+				authors: getChosenAuthors(),
+			};
+			mockedCoursesList.push(course);
+			setAuthors([...authors, authors.map((author) => (author.added = false))]);
+			setTitle('');
+			setDescription('');
+			setDuration('');
+			setName('');
+			setClassesHandler('create-wrapper');
+		} else {
+			alert('Please, fill all fields');
+		}
 	};
 
 	const getChosenAuthors = () => {
