@@ -11,6 +11,7 @@ const getAuthors = (course, authors) => {
 			}
 		});
 	});
+	console.log(filteredAuthors);
 	return filteredAuthors;
 };
 

@@ -12,6 +12,10 @@
     margin: 0 auto;
 }
 
+.btn-link {
+    text-decoration: none;
+}
+
 .custom-btn:hover {
     color: #a98dc1;
 }

@@ -1,22 +1,26 @@
 import Logo from './components/Logo/Logo';
 import Button from '../../common/Button/Button';
 import './Header.css';
+import { useNavigate } from 'react-router-dom';
 
-const onClickLogout = () => {
-	console.log('Hello world');
-};
+function Header({ headerInfo, setVisible }) {
+	const navigate = useNavigate();
+	const onClickLogout = () => {
+		window.localStorage.setItem('jwt-token', '');
+		navigate('/login');
+		setVisible({ visible: false, name: '' });
+	};
 
-function Header() {
 	return (
 		<header className='header'>
 			<Logo className='header-logo'></Logo>
-			<aside className='header-aside'>
-				<h2 className='header-title'>Andrii Chekurda</h2>
+			<aside className={headerInfo.visible ? 'header-aside' : 'hidden'}>
+				<h2 className='header-title'>{headerInfo.name}</h2>
 				<Button
 					className='header-button'
 					buttonText='Logout'
 					classValue='custom-btn'
-					onClick={onClickLogout}
+					click={onClickLogout}
 				></Button>
 			</aside>
 		</header>

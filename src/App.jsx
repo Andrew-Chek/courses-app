@@ -1,79 +1,30 @@
 import './App.css';
 import Header from './components/Header/Header';
-import Courses from './components/Courses/Courses';
-import { mockedCoursesList, mockedAuthorsList } from './mockData/mockData';
-import Button from './common/Button/Button';
-import SearchBar from './components/Courses/components/SearchBar/SearchBar';
 import CreateCourse from './components/CreateCourse/CreateCourse';
+import { Routes, Route } from 'react-router-dom';
+import CoursesPage from './components/Courses/components/CoursesPage/CoursesPage';
+import Registration from './components/Registration/Registration';
+import Login from './components/Login/Login';
+import { useState } from 'react';
 
-import { useMemo, useRef, useState } from 'react';
-
-function App() {
-	const [inputValue, setInput] = useState('');
-	const [search, isClicked] = useState(false);
-	const ref = useRef(mockedCoursesList);
-	const courses = useMemo(() => {
-		if (inputValue !== '' && search) {
-			ref.current = mockedCoursesList.filter((course) => {
-				return course.title.includes(inputValue);
-			});
-		} else if (inputValue !== '' && !search) {
-			ref.current = mockedCoursesList;
-		}
-		return search
-			? mockedCoursesList.filter((course) => {
-					return course.title.includes(inputValue);
-			  })
-			: ref.current;
-	}, [search, inputValue]);
-
-	const [createClassValues, setClasses] = useState('create-wrapper');
+export default function App() {
+	const [{ visible, name }, setVisible] = useState({
+		visible: localStorage.getItem('jwt-token') !== '',
+		name: '',
+	});
 	return (
 		<div>
-			<Header></Header>
-			<main className='main'>
-				<CreateCourse
-					classValues={createClassValues}
-					setClassesHandler={setClasses}
-				></CreateCourse>
-				<article
-					className={
-						createClassValues === 'create-wrapper' ? 'tools-menu' : 'hidden'
-					}
-				>
-					<SearchBar
-						className='searchbar'
-						handleChange={(event) => {
-							setInput(event.target.value);
-							isClicked(false);
-						}}
-						courses={courses}
-						click={() => {
-							isClicked(true);
-						}}
-					></SearchBar>
-					<section className='new-btn'>
-						<Button
-							buttonText='Add new course'
-							classValue='custom-btn'
-							click={() => {
-								setClasses('opened-create-wrapper');
-							}}
-						></Button>
-					</section>
-				</article>
-				<article
-					className={
-						createClassValues === 'create-wrapper'
-							? 'courses-wrapper'
-							: 'hidden'
-					}
-				>
-					<Courses courses={courses} authors={mockedAuthorsList}></Courses>
-				</article>
-			</main>
+			<Header headerInfo={{ visible, name }} setVisible={setVisible}></Header>
+			<Routes>
+				<Route path='/' element={visible ? <CoursesPage /> : <Login />}></Route>
+				<Route path='/courses' element={<CoursesPage />}></Route>
+				<Route path='/courses/add' element={<CreateCourse />}></Route>
+				<Route path='/registration' element={<Registration />}></Route>
+				<Route
+					path='/login'
+					element={<Login setVisible={setVisible} />}
+				></Route>
+			</Routes>
 		</div>
 	);
 }
-
-export default App;

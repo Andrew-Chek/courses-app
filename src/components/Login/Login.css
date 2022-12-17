@@ -1,0 +1,25 @@
+.login {
+    max-width: 50%;
+}
+
+.register-btn {
+    text-decoration: none;
+    color: #bde1f7;
+}
+
+.login-title {
+    text-align: center;
+}
+
+.login > .custom-btn {
+    margin: 10px auto;
+    display: block;
+}
+
+.main-div {
+    min-height: 75vh;
+    display: flex;
+    border: 3px solid #bde1f7;
+    justify-content: center;
+    align-items: center;
+}

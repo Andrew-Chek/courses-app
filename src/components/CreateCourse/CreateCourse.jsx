@@ -7,18 +7,20 @@ import { mockedAuthorsList, mockedCoursesList } from '../../mockData/mockData';
 import { useState, useCallback } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getDuration } from '../../helpers/durationPipe';
+import { useNavigate } from 'react-router-dom';
 
-function CreateCourse({ classValues, setClassesHandler }) {
+function CreateCourse() {
 	const [authors, setAuthors] = useState(mockedAuthorsList);
 	const [titleValue, setTitle] = useState('');
 	const [descriptionValue, setDescription] = useState('');
 	const [durationValue, setDuration] = useState(null);
+	const navigate = useNavigate();
 
 	function checkAllFields() {
 		return titleValue !== '' &&
 			descriptionValue !== '' &&
 			durationValue !== '' &&
-			getChosenAuthors().length !== 0
+			getChosenAuthorIds().length !== 0
 			? true
 			: false;
 	}
@@ -42,24 +44,29 @@ function CreateCourse({ classValues, setClassesHandler }) {
 				description: descriptionValue,
 				creationDate: new Date(),
 				duration: durationValue,
-				authors: getChosenAuthors(),
+				authors: getChosenAuthorIds(),
 			};
 			mockedCoursesList.push(course);
+			navigate('/courses');
 			setAuthors([...authors, authors.map((author) => (author.added = false))]);
 			setTitle('');
 			setDescription('');
 			setDuration('');
 			setName('');
-			setClassesHandler('create-wrapper');
 		} else {
 			alert('Please, fill all fields');
 		}
 	};
 
-	const getChosenAuthors = () => {
-		return authors.filter((author) => {
+	const getChosenAuthorIds = () => {
+		const filteredAuthors = authors.filter((author) => {
 			return author.added;
 		});
+		const ids = [];
+		filteredAuthors.forEach((author) => {
+			ids.push(author.id);
+		});
+		return ids;
 	};
 
 	const [authorName, setName] = useState('');
@@ -70,7 +77,7 @@ function CreateCourse({ classValues, setClassesHandler }) {
 	};
 
 	return (
-		<div className={classValues}>
+		<div className='create-wrapper'>
 			<section className='create-header'>
 				<Input
 					placeholder='Enter title'
