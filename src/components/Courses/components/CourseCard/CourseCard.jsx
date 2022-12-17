@@ -1,12 +1,14 @@
 import './CourseCard.css';
 import Button from '../../../../common/Button/Button';
 import { getDuration } from '../../../../helpers/durationPipe';
+import { useNavigate } from 'react-router-dom';
 
 function CourseCard(props) {
 	const names = props.authors.map(function (author) {
 		return author['name'];
 	});
 	const date = new Date(props.course.creationDate);
+	const navigate = useNavigate();
 	return (
 		<article className='course-card'>
 			<section className='course-info'>
@@ -31,6 +33,9 @@ function CourseCard(props) {
 				<Button
 					buttonText='Show course'
 					classValue='course-btn custom-btn'
+					click={() => {
+						navigate(`/courses/${props.course.id}`);
+					}}
 				></Button>
 			</section>
 		</article>

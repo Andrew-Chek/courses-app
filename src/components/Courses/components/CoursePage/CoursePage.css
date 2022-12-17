@@ -1,0 +1,29 @@
+.course-page {
+    border: 3px solid #bde1f7;
+    padding: 20px;
+}
+
+.course-main {
+    display: grid;
+    grid-template-areas: 
+    "info aside";
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.course-title {
+    text-align: center;
+    margin: 15px 0;
+}
+
+.course-info {
+    grid-area: info;
+}
+
+.course-aside {
+    grid-area: aside;
+}
+
+.course-author {
+    font-weight: normal;
+}

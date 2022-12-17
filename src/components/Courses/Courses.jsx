@@ -11,11 +11,10 @@ const getAuthors = (course, authors) => {
 			}
 		});
 	});
-	console.log(filteredAuthors);
 	return filteredAuthors;
 };
 
-function Courses(props) {
+export default function Courses(props) {
 	return props.courses.map((course) => (
 		<CourseCard
 			key={course.id}
@@ -24,5 +23,4 @@ function Courses(props) {
 		></CourseCard>
 	));
 }
-
-export default Courses;
+export { getAuthors };
