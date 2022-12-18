@@ -1,16 +1,13 @@
 import './Button.css';
-import { Link } from 'react-router-dom';
 
 function Button(props) {
 	return (
 		<button
 			className={props.classValue}
-			onSubmit={props.submit}
+			type={props.classValue.includes('submit') ? 'submit' : 'button'}
 			onClick={props.click}
 		>
-			<Link className='btn-link' to={props.link}>
-				{props.buttonText}
-			</Link>
+			{props.buttonText}
 		</button>
 	);
 }

@@ -2,7 +2,6 @@
     padding: 6px 15px;
     background-color: #fff;
     border: 2px solid #d3bde9;
-    transition: .7s all ease;
     cursor: pointer;
 }
 
@@ -14,8 +13,10 @@
 
 .btn-link {
     text-decoration: none;
+    transition: .7s all ease;
+    color: #000;
 }
 
-.custom-btn:hover {
+.btn-link:hover {
     color: #a98dc1;
 }

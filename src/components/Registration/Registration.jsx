@@ -11,9 +11,31 @@ export default function Registration() {
 	const [emailValue, setEmail] = useState('');
 	const [pswValue, setPsw] = useState('');
 	const navigate = useNavigate();
+
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		const newUser = {
+			name: nameValue,
+			password: pswValue,
+			email: emailValue,
+		};
+
+		const response = await fetch('http://localhost:4000/register', {
+			method: 'POST',
+			body: JSON.stringify(newUser),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		const result = response.json();
+		result.then((res) => {
+			console.log(res);
+			res.successful === true ? navigate('/login') : alert(res.errors[0]);
+		});
+	};
 	return (
 		<div className='main-div'>
-			<form className='registration'>
+			<form className='registration' onSubmit={handleSubmit}>
 				<h2 className='registration-title'>Registration</h2>
 				<Input
 					placeholder='Enter name'
@@ -41,29 +63,7 @@ export default function Registration() {
 				></Input>
 				<Button
 					buttonText='Registration'
-					click={async () => {
-						const newUser = {
-							name: nameValue,
-							password: pswValue,
-							email: emailValue,
-						};
-
-						const response = await fetch('http://localhost:4000/register', {
-							method: 'POST',
-							body: JSON.stringify(newUser),
-							headers: {
-								'Content-Type': 'application/json',
-							},
-						});
-						const result = response.json();
-						result.then((res) => {
-							console.log(res);
-							res.successful === true
-								? navigate('/login')
-								: alert(res.errors[0]);
-						});
-					}}
-					classValue='custom-btn'
+					classValue='custom-btn submit'
 				></Button>
 				<p>
 					If you have an account you can{' '}
