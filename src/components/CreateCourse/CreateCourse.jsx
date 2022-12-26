@@ -3,18 +3,23 @@ import Input from '../../common/Input/Input';
 import Button from '../../common/Button/Button';
 import Authors from '../Authors/Authors';
 import '../../common/Input/Input';
-import { mockedAuthorsList, mockedCoursesList } from '../../mockData/mockData';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { getDuration } from '../../helpers/durationPipe';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { saveCourse } from '../../store/courses/actionCreators';
+import { saveAuthor } from '../../store/authors/actionCreators';
+import { getAuthors } from '../../store/authors/actionCreators';
 
 function CreateCourse() {
-	const [authors, setAuthors] = useState(mockedAuthorsList);
+	const stateAuthors = useSelector((state) => state.authors);
 	const [titleValue, setTitle] = useState('');
 	const [descriptionValue, setDescription] = useState('');
 	const [durationValue, setDuration] = useState(null);
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	function checkAllFields() {
 		return titleValue !== '' &&
@@ -24,17 +29,6 @@ function CreateCourse() {
 			? true
 			: false;
 	}
-
-	const addAuthorHandler = useCallback(
-		(authorId) => {
-			setAuthors(
-				authors.map((author) =>
-					author.id === authorId ? { ...author, added: !author.added } : author
-				)
-			);
-		},
-		[authors]
-	);
 
 	const createCourseHandler = () => {
 		if (checkAllFields()) {
@@ -46,9 +40,16 @@ function CreateCourse() {
 				duration: durationValue,
 				authors: getChosenAuthorIds(),
 			};
-			mockedCoursesList.push(course);
+			dispatch(saveCourse(course));
 			navigate('/courses');
-			setAuthors([...authors, authors.map((author) => (author.added = false))]);
+			dispatch(
+				getAuthors(
+					stateAuthors.map((author) => {
+						author.added = false;
+						return author;
+					})
+				)
+			);
 			setTitle('');
 			setDescription('');
 			setDuration('');
@@ -59,7 +60,7 @@ function CreateCourse() {
 	};
 
 	const getChosenAuthorIds = () => {
-		const filteredAuthors = authors.filter((author) => {
+		const filteredAuthors = stateAuthors.filter((author) => {
 			return author.added;
 		});
 		const ids = [];
@@ -72,8 +73,7 @@ function CreateCourse() {
 	const [authorName, setName] = useState('');
 	const addNewAuthor = () => {
 		const author = { id: uuidv4(), name: authorName, added: false };
-		mockedAuthorsList.push(author);
-		setAuthors([...mockedAuthorsList]);
+		dispatch(saveAuthor(author));
 	};
 
 	return (
@@ -150,13 +150,9 @@ function CreateCourse() {
 				<article className='authors'>
 					<section>
 						<h3 className='authors-title'>Authors</h3>
-						<Authors authors={authors} click={addAuthorHandler}></Authors>
+						<Authors></Authors>
 						<h3 className='authors-title'>Authors list</h3>
-						<Authors
-							added={true}
-							authors={authors}
-							click={addAuthorHandler}
-						></Authors>
+						<Authors added={true}></Authors>
 					</section>
 				</article>
 			</section>

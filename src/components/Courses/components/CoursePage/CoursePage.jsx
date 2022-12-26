@@ -2,24 +2,21 @@ import './CoursePage.css';
 import Button from '../../../../common/Button/Button';
 import { getDuration } from '../../../../helpers/durationPipe';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-	mockedAuthorsList,
-	mockedCoursesList,
-} from '../../../../mockData/mockData';
 import { getAuthors } from '../../Courses';
+import { useSelector } from 'react-redux';
 
 export default function CoursePage() {
 	const param = useParams();
-	const course = mockedCoursesList.find(
-		(course) => course.id === param.courseId
-	);
-	const authors = getAuthors(course, mockedAuthorsList);
+	const courses = useSelector((state) => state.courses);
+	const stateAuthors = useSelector((state) => state.authors);
+	const course = courses.find((course) => course.id === param.courseId);
+	const authors = getAuthors(course, stateAuthors);
 	const date = new Date(course.creationDate);
 	const navigate = useNavigate();
 	return (
 		<article className='course-page'>
 			<Button
-				buttonText='Back to courses'
+				buttonText='< Back to courses'
 				click={() => {
 					navigate('/courses');
 				}}

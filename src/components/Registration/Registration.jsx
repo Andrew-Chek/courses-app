@@ -5,6 +5,7 @@ import Button from '../../common/Button/Button';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { service } from '../../services';
 
 export default function Registration() {
 	const [nameValue, setName] = useState('');
@@ -20,13 +21,7 @@ export default function Registration() {
 			email: emailValue,
 		};
 
-		const response = await fetch('http://localhost:4000/register', {
-			method: 'POST',
-			body: JSON.stringify(newUser),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+		const response = await service.register(newUser);
 		const result = response.json();
 		result.then((res) => {
 			console.log(res);

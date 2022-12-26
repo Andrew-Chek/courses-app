@@ -1,6 +1,6 @@
 import './Courses.css';
 import CourseCard from './components/CourseCard/CourseCard';
-import { mockedAuthorsList } from '../../mockData/mockData';
+import { useSelector } from 'react-redux';
 
 const getAuthors = (course, authors) => {
 	let filteredAuthors = [];
@@ -14,12 +14,13 @@ const getAuthors = (course, authors) => {
 	return filteredAuthors;
 };
 
-export default function Courses(props) {
-	return props.courses.map((course) => (
+export default function Courses({ courses }) {
+	const stateAuthors = useSelector((state) => state.authors);
+	return courses.map((course) => (
 		<CourseCard
 			key={course.id}
 			course={course}
-			authors={getAuthors(course, mockedAuthorsList)}
+			authors={getAuthors(course, stateAuthors)}
 		></CourseCard>
 	));
 }

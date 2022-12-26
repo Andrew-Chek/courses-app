@@ -1,8 +1,13 @@
 import './Authors.css';
 import Button from '../../common/Button/Button';
+import { useDispatch } from 'react-redux';
+import { updateAuthor } from '../../store/authors/actionCreators';
+import { useSelector } from 'react-redux';
 
-function Authors({ authors, click, added = false }) {
+function Authors({ added = false }) {
+	const authors = useSelector((state) => state.authors);
 	const hasItems = authors.some((author) => author.added === added);
+	const dispatch = useDispatch();
 	return hasItems ? (
 		authors.map((author) =>
 			added === author.added ? (
@@ -13,7 +18,8 @@ function Authors({ authors, click, added = false }) {
 							buttonText={added ? 'Delete author' : 'Add author'}
 							classValue='custom-btn'
 							click={() => {
-								click(author.id);
+								author.added = !author.added;
+								dispatch(updateAuthor(author));
 							}}
 						/>
 					</div>

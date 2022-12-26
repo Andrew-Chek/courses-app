@@ -1,55 +1,55 @@
 import SearchBar from '../SearchBar/SearchBar';
 import Courses from '../../Courses';
-import {
-	mockedAuthorsList,
-	mockedCoursesList,
-} from '../../../../mockData/mockData';
 import Button from '../../../../common/Button/Button';
 
-import { useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export default function CoursesPage() {
 	const [inputValue, setInput] = useState('');
 	const [search, isClicked] = useState(false);
-	const ref = useRef(mockedCoursesList);
+	const stateCourses = useSelector((state) => state.courses);
+	const navigate = useNavigate();
 	const courses = useMemo(() => {
 		if (inputValue !== '' && search) {
-			ref.current = mockedCoursesList.filter((course) => {
+			return stateCourses.filter((course) => {
 				return course.title.includes(inputValue);
 			});
 		} else if (inputValue !== '' && !search) {
-			ref.current = mockedCoursesList;
+			return stateCourses;
 		}
 		return search
-			? mockedCoursesList.filter((course) => {
+			? stateCourses.filter((course) => {
 					return course.title.includes(inputValue);
 			  })
-			: ref.current;
-	}, [search, inputValue]);
+			: stateCourses;
+	}, [search, inputValue, stateCourses]);
 	return (
 		<main className='main'>
 			<article className='tools-menu'>
 				<SearchBar
 					className='searchbar'
-					handleChange={(event) => {
-						setInput(event.target.value);
-						isClicked(false);
-					}}
-					courses={courses}
 					click={() => {
 						isClicked(true);
 					}}
+					handleChange={(event) => {
+						setInput(event.target.value);
+					}}
+					inputValue={inputValue}
 				></SearchBar>
 				<section className='new-btn'>
 					<Button
 						buttonText='Add new course'
-						link='/courses/add'
+						click={() => {
+							navigate('/courses/add');
+						}}
 						classValue='custom-btn'
 					></Button>
 				</section>
 			</article>
 			<article className='courses-wrapper'>
-				<Courses courses={courses} authors={mockedAuthorsList}></Courses>
+				<Courses courses={courses}></Courses>
 			</article>
 		</main>
 	);

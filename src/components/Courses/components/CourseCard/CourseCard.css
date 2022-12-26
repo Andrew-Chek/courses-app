@@ -7,9 +7,9 @@
     padding: 20px;
 }
 
-.course-card > button {
+.buttons {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
 }
 
 .course-title {

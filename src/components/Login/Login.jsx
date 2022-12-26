@@ -5,34 +5,43 @@ import Button from '../../common/Button/Button';
 
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { userLogin } from '../../store/user/actionCreators';
+import { service } from '../../services';
+import { getCourses } from '../../store/courses/actionCreators';
+import { getAuthors } from '../../store/authors/actionCreators';
 
-export default function Login({ setVisible }) {
+export default function Login() {
 	const [emailValue, setEmail] = useState('');
 	const [pswValue, setPsw] = useState('');
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const newUser = {
+		const user = {
 			password: pswValue,
 			email: emailValue,
 		};
 
-		const response = await fetch('http://localhost:4000/login', {
-			method: 'POST',
-			body: JSON.stringify(newUser),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
+		const response = await service.login(user);
 		const result = response.json();
-		result.then((res) => {
+		result.then(async (res) => {
 			console.log(res);
 			if (res.successful === true) {
 				window.localStorage.setItem('jwt-token', res.result);
+				dispatch(userLogin(res.user.name, res.user.email));
+				const coursesResponse = await (await service.getCourses()).json();
+				const authorsResponse = await (await service.getAuthors()).json();
+				const courses = coursesResponse.result;
+				const authors = authorsResponse.result.map((author) => {
+					author.added = false;
+					return author;
+				});
+				dispatch(getCourses(courses));
+				dispatch(getAuthors(authors));
 				navigate('/courses');
-				setVisible({ visible: true, name: res.user.name });
-			} else alert(res.errors[0]);
+			} else alert(res.result);
 		});
 	};
 	return (

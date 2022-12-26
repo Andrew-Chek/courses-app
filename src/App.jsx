@@ -6,31 +6,23 @@ import CoursesPage from './components/Courses/components/CoursesPage/CoursesPage
 import CoursePage from './components/Courses/components/CoursePage/CoursePage';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 export default function App() {
-	const [{ visible, name }, setVisible] = useState({
-		visible: false,
-		name: '',
-	});
+	const user = useSelector((state) => state.user);
 	return (
 		<div>
-			<Header headerInfo={{ visible, name }} setVisible={setVisible}></Header>
+			<Header></Header>
 			<Routes>
 				<Route
 					path='/'
-					element={
-						visible ? <CoursesPage /> : <Login setVisible={setVisible} />
-					}
+					element={user.isAuth ? <CoursesPage /> : <Login />}
 				></Route>
 				<Route path='/courses' element={<CoursesPage />}></Route>
 				<Route path='/courses/:courseId' element={<CoursePage />}></Route>
 				<Route path='/courses/add' element={<CreateCourse />}></Route>
 				<Route path='/registration' element={<Registration />}></Route>
-				<Route
-					path='/login'
-					element={<Login setVisible={setVisible} />}
-				></Route>
+				<Route path='/login' element={<Login />}></Route>
 			</Routes>
 		</div>
 	);
